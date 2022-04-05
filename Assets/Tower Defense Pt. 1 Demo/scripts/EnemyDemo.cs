@@ -22,6 +22,9 @@ public class EnemyDemo : MonoBehaviour
     Vector3 targetPosition;
 
     bool enemyDied = false;
+
+    public delegate void EnemyDestroyed(EnemyDemo enemy);
+    public event EnemyDestroyed OnEnemyDestroyed;
     // NOTE! This code should work for any speed value (large or small)
 
     //-----------------------------------------------------------------------------
@@ -52,29 +55,28 @@ public class EnemyDemo : MonoBehaviour
         {
             TargetNextWaypoint();
         }
-        if (Input.GetButtonUp("Fire1"))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                health--;
-                Debug.Log("Health: " + health);
-                if (health == 0)
-                {
-                    Debug.Log("Dead");
-                    enemyDied = true;
-                    Destroy(gameObject);
-                }
-            }
-        }
         
+        
+        
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        health--;
+        Debug.Log("Health: " + health);
+        if (health == 0)
+        {
+            Debug.Log("Dead");
+            enemyDied = true;
+            Destroy(gameObject);
+        }
         if (enemyDied)
         {
             OnEnemyDied?.Invoke(this);
         }
     }
+
 
     //-----------------------------------------------------------------------------
     private void TargetNextWaypoint()
