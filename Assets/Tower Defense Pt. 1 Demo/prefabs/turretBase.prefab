@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4744741869015398437}
   - component: {fileID: 4744741869015398436}
   - component: {fileID: 4744741869015398439}
+  - component: {fileID: -1238906255149554272}
   m_Layer: 0
   m_Name: turretBase
   m_TagString: Untagged
@@ -95,3 +96,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1238906255149554272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4744741869015398441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c22058487cb98f74ca3de362d877dddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 0.90588236, g: 0.8627451, b: 0.4392157, a: 0}
+  turret: {fileID: 0}
+  positionOffset: {x: 0, y: 0, z: 1}
+  turretBlueprint:
+    prefab: {fileID: 0}
+    cost: 0
+  coinAmount: 0

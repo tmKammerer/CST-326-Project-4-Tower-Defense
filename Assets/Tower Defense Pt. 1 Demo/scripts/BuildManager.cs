@@ -5,11 +5,12 @@ using UnityEngine;
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
-    private GameObject turretToBuild;
+    private turretBlueprint turretToBuild;
     public GameObject standardTurrretPrefab;
-
+   
     // Start is called before the first frame update
 
+    
 
     private void Awake()
     {
@@ -21,10 +22,7 @@ public class BuildManager : MonoBehaviour
         instance = this;
     }
 
-    void Start()
-    {
-        turretToBuild = standardTurrretPrefab;
-    }
+    
 
     // Update is called once per frame
     void Update()
@@ -32,9 +30,26 @@ public class BuildManager : MonoBehaviour
         
     }
 
+    public bool HasMoney { get { return coinManagement.coins >= turretToBuild.cost; } }
+    public bool CanBuild { get{ return turretToBuild != null; } }
 
-    public GameObject GetTurretToBuild()
+    public void BuildTurretOn(Node node)
     {
-        return turretToBuild;
+        if (coinManagement.coins < turretToBuild.cost)
+        {
+            Debug.Log("not enough money");
+            return;
+        }
+        coinManagement.coins-=turretToBuild.cost;
+
+        GameObject turret=(GameObject)Instantiate(turretToBuild.prefab, node.GetBuildPosition(),Quaternion.identity);
+        node.turret = turret;
+
+        Debug.Log("Turret Built!");
     }
+    public void SelectTurretToBuild(turretBlueprint turret)
+    {
+        turretToBuild = turret;
+    }
+
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class turret : MonoBehaviour
 {
     private Transform target;
-
+    private EnemyDemo targetEnemy;
     [Header("Attributes")]
 
     public float range = 15f;
@@ -45,6 +45,7 @@ public class turret : MonoBehaviour
             if (nearestDistance != null && shortestDistance <= range)
             {
                 target = nearestDistance.transform;
+                targetEnemy = nearestDistance.GetComponent<EnemyDemo>();
             }
             else
             {
@@ -77,6 +78,8 @@ public class turret : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
+
+
 
     void Shoot()
     {

@@ -84,6 +84,7 @@ public class EnemyDemo : MonoBehaviour
         if (targetWaypointIndex >= Waypoints.points.Length-1)
         {
             Debug.Log("Ha! Ha! You suck!");
+            coinManagement.lives--;
             Destroy(gameObject);
             return;
         }

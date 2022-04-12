@@ -23,6 +23,7 @@ public class EnemyManager : MonoBehaviour
 
     private float countdown = 3f;
 
+
     private int wave = 1;
 
     public TextMeshProUGUI timer;
@@ -45,6 +46,7 @@ public class EnemyManager : MonoBehaviour
         {
             StartCoroutine(spawnWave());
             countdown = spawnNext;
+            spawnNext++;
         }
         countdown -= Time.deltaTime;
 
@@ -69,7 +71,7 @@ public class EnemyManager : MonoBehaviour
         
         enemy.OnEnemyDestroyed -= OnEnemyDestroyed;
         
-        scoreManager.AddCoins(enemy.coin);
+        coinManagement.coins+=enemy.coin;
         
     }
 

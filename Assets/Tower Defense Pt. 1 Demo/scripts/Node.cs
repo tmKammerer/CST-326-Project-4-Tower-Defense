@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour
 {
@@ -9,12 +10,17 @@ public class Node : MonoBehaviour
 
     private Renderer rend;
 
-    private GameObject turret;
+    [Header("Optional")]
+    public GameObject turret;
     public Vector3 positionOffset;
 
-    public coinManagement purse;
+    public turretBlueprint turretBlueprint;
+
+
 
     public int coinAmount;
+
+    BuildManager buildManager;
     
     // Start is called before the first frame update
     void Start()
@@ -22,11 +28,32 @@ public class Node : MonoBehaviour
         
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
-        coinAmount = purse.coins;
+
+        buildManager = BuildManager.instance;
+        
+    }
+
+    public Vector3 GetBuildPosition()
+    {
+        return transform.position + positionOffset;
     }
     void OnMouseEnter()
     {
-        rend.material.color = hoverColor;
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        if (!buildManager.CanBuild)
+        {
+            return;
+        }
+        if (buildManager.HasMoney)
+        {
+            rend.material.color = hoverColor;
+        }
+
+        
 
     }
 
@@ -40,24 +67,35 @@ public class Node : MonoBehaviour
         if (turret != null)
         {
             Debug.Log("Tower already placed");
+            return;
         }
-        else
+        if (!buildManager.CanBuild)
         {
-
-
-            if (coinAmount >= 5)
-            {
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild();
-                turret = (GameObject)Instantiate(turretToBuild, transform.position + positionOffset, transform.rotation);
-                purse.SubtractCoins(5);
-            }
-            else
-            {
-                Debug.Log("You don't have enough coins");
-            }
+            return;
         }
-    }
 
+        buildManager.BuildTurretOn(this);
+        
+    }
+    void BuildTurret(turretBlueprint blueprint)
+    {
+        if (coinManagement.coins < blueprint.cost)
+        {
+            Debug.Log("Not enough money to build that!");
+            return;
+        }
+
+        coinManagement.coins -= blueprint.cost;
+
+        GameObject _turret = (GameObject)Instantiate(blueprint.prefab, GetBuildPosition(), Quaternion.identity);
+        turret = _turret;
+
+        turretBlueprint = blueprint;
+
+        
+
+        Debug.Log("Turret build!");
+    }
     // Update is called once per frame
     void Update()
     {
